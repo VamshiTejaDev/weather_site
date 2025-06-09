@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #83a4d4, #b6fbff);
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        .weather-container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        img {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <h1 class="mb-4">Weather App</h1>
+        <form method="POST" class="mb-4">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="city" class="form-control" placeholder="Enter city" value="{{ city }}" required>
+                <button type="submit" class="btn btn-primary">Get Weather</button>
+            </div>
+        </form>
+
+        {% if weather.error %}
+            <div class="alert alert-danger">{{ weather.error }}</div>
+        {% elif weather.city %}
+            <h2>Weather in {{ weather.city }}</h2>
+            <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="icon">
+            <p><strong>Temperature:</strong> {{ weather.temperature }} °C</p>
+            <p><strong>Description:</strong> {{ weather.description }}</p>
+            <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ weather.wind }} km/h</p>
+        {% endif %}
+    </div>
+</body>
+</html>
